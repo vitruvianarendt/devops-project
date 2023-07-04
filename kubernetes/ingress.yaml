@@ -1,30 +1,18 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: mcu-all
-spec:
-  stripPrefix:
-    forceSlash: false
-    prefixes:
-      - /ver1
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mcu-all
+  name: devops-project-postgres-ingress
+  namespace: devops
   annotations:
-    ingress.kubernetes.io/ssl-redirect: 'false'
-    traefik.ingress.kubernetes.io/router.middlewares: default-mcu-all@kubernetescrd
+    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: localhost
-      http:
-        paths:
-          - path: /ver1
-            pathType: Prefix
-            backend:
-              service:
-                name: devops-project
-                port:
-                  number: 80
-  
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: devops-project-postgres-service
+            port:
+              number: 80

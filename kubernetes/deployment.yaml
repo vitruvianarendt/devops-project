@@ -19,7 +19,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devops-project-deployment
+  name: devops-project-postgres-deployment
   namespace: devops
 spec:
   replicas: 5
@@ -32,7 +32,7 @@ spec:
         app: devops-project
     spec:
       containers:
-        - name: projectkiii
+        - name: devops-project
           image: vitruvianarendt/projectkiii:latest
           imagePullPolicy: Always
           resources:
@@ -43,10 +43,10 @@ spec:
             - containerPort: 80
           envFrom:
             - configMapRef:
-                name: devops-project-config
+                name: devops-project-postgres-config
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: devops-project-secret
+                  name: devops-project-postgres-secret
                   key: password
